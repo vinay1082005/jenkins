@@ -1,0 +1,22 @@
+pipeline {
+  agent any
+
+  environment {
+    DEPLOY_DIR = "$HOME/static-website-deploy"  // Local deploy directory
+  }
+
+  stages {
+    stage('Clone') {
+      steps {
+        git 'https://github.com/vinay1082005/jenkins.git'
+      }
+    }
+
+    stage('Deploy to Local Folder') {
+      steps {
+        sh 'mkdir -p $DEPLOY_DIR'
+        sh 'rsync -av --exclude=.git ./ $DEPLOY_DIR'
+      }
+    }
+  }
+}
